@@ -1,0 +1,68 @@
+import 'package:console/console.dart';
+import 'dart:io';
+import 'dart:async';
+import 'package:event/event.dart';
+
+
+
+class ChangeArgs extends EventArgs {
+  int ev_type;
+  List <int> key_data;
+  String msg;
+  ChangeArgs(this.ev_type,this.key_data,this.msg);
+}
+
+var  args = ChangeArgs(0,[]," ");
+var e = Event<ChangeArgs>();
+var sc = StreamController();
+
+abstract class IAplication {void Run(){}}
+
+
+
+class Application extends IAplication{
+
+
+
+
+Application(){
+  stdin.echoMode = false;
+  stdin.lineMode = false;
+  Console.eraseDisplay(0);
+  Console.setTextColor(3);
+
+e.subscribeStream(sc.sink);
+
+sc.stream.listen((e) => print(e.key_data));
+ // Console.moveCursor(row:10,column:10);    
+}
+
+void Run(){
+  
+stdin.listen((data) {
+//print (data);
+args.key_data=data;
+e.broadcast(args);
+ });
+
+}
+}
+
+class Menu extends Application{
+
+void Run(){
+sc.stream.listen(e) ;
+}}
+
+
+
+
+void main() {
+ 
+Application app=Application();  
+app.Run();
+
+}
+
+
+
